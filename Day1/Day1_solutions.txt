@@ -1,0 +1,4 @@
+Elf 148 has 70613 calories worth of food.
+Performance: 0.0005372500017983839 sec
+Elves [ 66 148 160] have 205805 calories worth of food.
+Performance: 0.0005651250103255734 sec

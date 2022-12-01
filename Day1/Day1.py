@@ -3,6 +3,7 @@
 # First attempt at doing Day 1 of Advent of Code 2022
 
 import numpy
+import time
 
 def read_input(file_name):
     with open(file_name, 'r') as f:
@@ -36,14 +37,19 @@ def return_top3(input_list):
 
 if __name__ == "__main__":
     ## Part 1
+    startTime = time.perf_counter()
     #b = read_input("Day1_test_input.txt")
     b = read_input("Day1_input.txt")
     answer = return_max(b)
     print(f'Elf {answer[1]+1} has {answer[0]} calories worth of food.')
+    print(f"Performance: {(time.perf_counter() - startTime)} sec")
 
 
     ## Part 2
+    startTime = time.perf_counter()
     #a = read_input("Day1_test_input.txt")
     a = read_input("Day1_input.txt")
     answer2 = return_top3(a)
     print(f'Elves {answer2[1]+1} have {answer2[0]} calories worth of food.')
+    print(f"Performance: {(time.perf_counter() - startTime)} sec")
+
