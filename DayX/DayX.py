@@ -1,6 +1,6 @@
-# Day1.py
+# DayX.py
 #
-# First attempt at doing Day 1 of Advent of Code 2022
+# First attempt at doing Day X of Advent of Code 2022
 
 import numpy
 import sys
