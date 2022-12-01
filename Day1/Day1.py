@@ -9,24 +9,24 @@ def read_input(file_name):
     with open(file_name, 'r') as f:
         read_list = f.read().splitlines()
 
-    # Create an array that assume each "elf" only carried one food item
-    final_count = numpy.zeros(int(len(read_list)/2 + 1))
+    final_count = [0]
     counter = 0
     for entry in read_list:
         if entry != '':
             final_count[counter] += int(entry)
-        elif entry == '':
+        else:
             counter += 1
+            final_count.append(0)
 
-    final_count = numpy.trim_zeros(final_count, trim='b')
+    final_count = numpy.asarray(final_count)
 
     return final_count
 
 def return_max(input_list):
-   max_cal = numpy.max(input_list)
-   where = numpy.where(input_list == max_cal)[0][0]
+    max_cal = numpy.max(input_list)
+    where = numpy.where(input_list == max_cal)[0][0]
 
-   return [int(max_cal), where]
+    return [int(max_cal), where]
 
 def return_top3(input_list):
     sorted_list = sorted(input_list, key=lambda x:-x)
