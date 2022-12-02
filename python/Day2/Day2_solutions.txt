@@ -1,0 +1,4 @@
+I won 11150 number of points following this guide.
+Performance: 1.6600097296759486e-07 sec
+I won 8295 number of points following this guide.
+Performance: 8.400093065574765e-08 sec
