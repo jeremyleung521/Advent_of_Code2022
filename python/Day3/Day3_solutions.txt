@@ -1,0 +1,4 @@
+Sum of priority is 7742.
+Performance: 2.0800507627427578e-07 sec
+Sum of priority is 2276.
+Performance: 1.2500095181167126e-07 sec
