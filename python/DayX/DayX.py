@@ -2,7 +2,6 @@
 #
 # First attempt at doing Day X of Advent of Code 2022
 
-import numpy
 import sys
 sys.path.append("..")
 

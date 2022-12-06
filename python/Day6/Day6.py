@@ -10,25 +10,15 @@ from perf import calc_perf
 
 def read_input(file_name):
     with open(file_name, 'r') as f:
-        read_list = f.readlines()
+        return f.readlines()
 
-    return read_list
 
-def calc_terms(input):
-    for idx in range(3, len(input)):
-        if len(set(input[idx-4:idx])) == 4:
-            index = idx
-            break
+def calc_terms(input, num_len):
+    for idx in range(num_len-1, len(input)):
+        if len(set(input[idx-num_len:idx])) == num_len:
+            return idx
 
-    return index
 
-def calc_terms_fourteen(input):
-    for idx in range(13, len(input)):
-        if len(set(input[idx-14:idx])) == 14:
-            index = idx
-            break
-
-    return index
 
 def main():
     ## Part 1
@@ -36,7 +26,7 @@ def main():
     # b = read_input("Day6_test_input.txt")
     b = read_input("Day6_input.txt")
     for j in b:
-        answer = calc_terms(j)
+        answer = calc_terms(j,4)
         print(f'After character {answer}.')
 
 
@@ -45,7 +35,7 @@ def main2():
     # a = read_input("Day6_test_input.txt")
     a = read_input("Day6_input.txt")
     for j in a:
-        answer = calc_terms_fourteen(j)
+        answer = calc_terms(j,14)
         print(f'After character {answer}.')
 
 

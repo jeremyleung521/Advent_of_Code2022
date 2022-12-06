@@ -1,4 +1,4 @@
 After character 1920.
 Performance: 1.66997779160738e-07 sec
 After character 2334.
-Performance: 1.2500095181167126e-07 sec
+Performance: 8.300412446260452e-08 sec
