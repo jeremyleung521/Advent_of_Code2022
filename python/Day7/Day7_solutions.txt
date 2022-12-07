@@ -1,0 +1,3 @@
+All directories <= 100000 has a sum of 1350966.
+Delete directory /hccpl/qsgv/lhjmzsl of size 6296435.
+Performance: 4.1601015254855156e-07 sec
