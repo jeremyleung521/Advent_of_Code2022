@@ -8,15 +8,6 @@ sys.path.append("..")
 from perf import calc_perf
 
 
-def join_string(list_of_strings):
-    string = ''
-    for j in range(1, len(list_of_strings)):
-        string += '/' + list_of_strings[j]
-
-    # print(string)
-    return string
-
-
 def read_input(file_name):
     with open(file_name, 'r') as f:
         read_list = f.read().splitlines()
@@ -116,16 +107,13 @@ def main():
 
     # Part 2
     required = 30000000 - (70000000 - final_dict['/'])
+    inv_dict = {v: k for k, v in final_dict.items()}
     sorted_list = sorted(final_dict.values(), key=lambda x: x)
     for j in sorted_list:
         if j >= required:
             break
 
-    final_list = list(final_dict.values())
-    final_keys = list(final_dict.keys())
-    final_dir = final_keys[final_list.index(j)]
-
-    print(f'Delete directory {final_dir} of size {j}.')
+    print(f'Delete directory {inv_dict[j]} of size {j}.')
 
 
 if __name__ == "__main__":
