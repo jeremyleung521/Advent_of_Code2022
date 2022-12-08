@@ -1,0 +1,4 @@
+1870 trees are visible.
+Performance: 1.25030055642128e-07 sec
+Best view has a score of 517440.
+Performance: 8.399365469813347e-08 sec
