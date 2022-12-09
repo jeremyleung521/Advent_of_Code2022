@@ -17,12 +17,9 @@ def read_input(file_name):
     # print(read_list)
     return read_list
 
-def track_tail(x_pos, y_pos, x, y, x_diff, y_diff):
+def track_tail(x_pos, y_pos, x, y):
     if abs(x_pos - x) <= 1 and abs(y_pos - y) <= 1:
         pass
-    # elif (x_pos == x) or (y_pos == y):
-    #     x_pos += x_diff
-    #     y_pos += y_diff
     else:
         if x > x_pos:
             x_pos += 1
@@ -38,25 +35,24 @@ def track_tail(x_pos, y_pos, x, y, x_diff, y_diff):
 
 def move_head(direction, x_pos, y_pos, x, y):
     flag = False
-    knot_move = (0,0)
     if x_pos == x and y_pos == y:
         flag = True
     if direction == 'U':
         y += 1
         if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y, 0, 1)
+            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'D':
         y -= 1
         if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y, 0, -1)
+            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'L':
         x -= 1
         if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y, -1, 0)
+            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'R':
         x += 1
         if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y, 1, 0)
+            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
 
     return (x_pos, y_pos, x, y)
 
@@ -75,30 +71,9 @@ def track_occupancy(input_list):
     # print(exclusive)
     return len(exclusive)
 
-def track_tail_nine(x_pos, y_pos, x, y):
-    delta = [0,0]
-    if abs(x_pos - x) <= 1 and abs(y_pos - y) <= 1: # Right next to each other
-        pass
-    else: # Two or more steps away
-        if x > x_pos:
-            x_pos += 1
-            delta[0] = 1
-        elif x < x_pos:
-            x_pos -= 1
-            delta[0] = 1
-        if y > y_pos:
-            y_pos += 1
-            delta[1] = 1
-        elif y < y_pos:
-            y_pos -= 1
-            delta[1] = 1
-
-    return (x_pos, y_pos)
-
 
 def track_occupancy_nine(input_list):
     pos = [[0,0] for i in range(0,10)]
-    prev_moves = [[0,0] for i in range(0,10)]
 
     exclusive = set()
     for line in input_list:
@@ -111,30 +86,7 @@ def track_occupancy_nine(input_list):
                     pass
                 else:
                     (pos[knot][0], pos[knot][1]) = \
-                        track_tail_nine(pos[knot][0], pos[knot][1], pos[knot-1][0],
-                                   pos[knot-1][1])
-            exclusive.add((pos[-1][0], pos[-1][1]))
-            #print(pos)
-
-    # print(exclusive)
-    return len(exclusive)
-
-def track_occupancy_nine(input_list):
-    pos = [[0,0] for i in range(0,10)]
-    prev_moves = [[0,0] for i in range(0,10)]
-
-    exclusive = set()
-    for line in input_list:
-        #print(line)
-        for times in range(0, int(line[1])):
-            (pos[1][0], pos[1][1], pos[0][0], pos[0][1]) = \
-                move_head(line[0], pos[1][0], pos[1][1], pos[0][0], pos[0][1])
-            for knot in range(2, 10):
-                if pos[knot][0] == pos[knot-1][0] and pos[knot][1] == pos[knot-1][1]:
-                    pass
-                else:
-                    (pos[knot][0], pos[knot][1]) = \
-                        track_tail_nine(pos[knot][0], pos[knot][1], pos[knot-1][0],
+                        track_tail(pos[knot][0], pos[knot][1], pos[knot-1][0],
                                    pos[knot-1][1])
             exclusive.add((pos[-1][0], pos[-1][1]))
             #print(pos)

@@ -1,4 +1,4 @@
 There are 6175 number of spots visited.
-Performance: 1.6599369700998068e-07 sec
+Performance: 2.079978003166616e-07 sec
 There are 2578 number of spots visited.
-Performance: 2.9199873097240925e-07 sec
+Performance: 8.300412446260452e-08 sec
