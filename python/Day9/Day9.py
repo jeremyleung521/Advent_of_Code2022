@@ -34,25 +34,18 @@ def track_tail(x_pos, y_pos, x, y):
 
 
 def move_head(direction, x_pos, y_pos, x, y):
-    flag = False
-    if x_pos == x and y_pos == y:
-        flag = True
     if direction == 'U':
         y += 1
-        if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
+        (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'D':
         y -= 1
-        if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
+        (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'L':
         x -= 1
-        if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
+        (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
     elif direction == 'R':
         x += 1
-        if flag is False:
-            (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
+        (x_pos, y_pos) = track_tail(x_pos, y_pos, x, y)
 
     return (x_pos, y_pos, x, y)
 
@@ -82,12 +75,9 @@ def track_occupancy_nine(input_list):
             (pos[1][0], pos[1][1], pos[0][0], pos[0][1]) = \
                 move_head(line[0], pos[1][0], pos[1][1], pos[0][0], pos[0][1])
             for knot in range(2, 10):
-                if pos[knot][0] == pos[knot-1][0] and pos[knot][1] == pos[knot-1][1]:
-                    pass
-                else:
-                    (pos[knot][0], pos[knot][1]) = \
-                        track_tail(pos[knot][0], pos[knot][1], pos[knot-1][0],
-                                   pos[knot-1][1])
+                (pos[knot][0], pos[knot][1]) = \
+                    track_tail(pos[knot][0], pos[knot][1], pos[knot-1][0],
+                               pos[knot-1][1])
             exclusive.add((pos[-1][0], pos[-1][1]))
             #print(pos)
 
