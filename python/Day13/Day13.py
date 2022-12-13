@@ -7,7 +7,6 @@ sys.path.append("..")
 
 from perf import calc_perf
 from ast import literal_eval
-from functools import cmp_to_key
 
 def read_input(file_name):
     with open(file_name, 'r') as f:
