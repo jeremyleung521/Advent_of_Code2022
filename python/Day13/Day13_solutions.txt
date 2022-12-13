@@ -1,0 +1,4 @@
+Sum of packets in right order is 6484.
+Performance: 2.4998735170811415e-07 sec
+Product of Divider Packet Indices is 19305.
+Performance: 1.66997779160738e-07 sec
