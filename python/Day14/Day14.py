@@ -96,7 +96,7 @@ def main2():
     # input, xlim, ylim = read_input("Day14_test_input.txt")
     input, xlim, ylim = read_input("Day14_input.txt")
 
-    xlim = (xlim[0]-500, xlim[1]+500)
+    xlim = (xlim[0]-xlim[0], xlim[1]+xlim[0])
     ylim = (ylim[0], ylim[1]+2)
 
     inf_start = (xlim[0],ylim[1])
