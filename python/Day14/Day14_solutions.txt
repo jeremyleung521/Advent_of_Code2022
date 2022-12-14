@@ -1,0 +1,4 @@
+It takes 808 cycles for a steady state.
+Performance: 2.0899824448861182e-07 sec
+It takes 26625 cycles for a steady state.
+Performance: 2.079978003166616e-07 sec
