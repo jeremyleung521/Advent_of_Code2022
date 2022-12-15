@@ -67,8 +67,30 @@ def determine_manhattan_list(sensor_list, beacon_list):
 
     return manhattan_list, min, max
 
-def eligible_list(manhattan_list, sensor_list, beacon_list):
-    for
+def eligible_list(manhattan_list, sensor_list, extra=1):
+    eligible_list = []
+    # Crawl along one side of the diamond edge and add those points to the eligible list
+    for dist_idx, distance in enumerate(tqdm(manhattan_list)):
+        new_list = []
+        start = [sensor_list[dist_idx][0], sensor_list[dist_idx][1] - distance - extra]
+        dist = distance + extra
+        new_list.append(start)
+        new_list.append([start[0], start[1]+ 2*dist])
+        for flip_idx in range(1, dist+1):
+            dist -= 1
+            curr = [start[0]+1, start[1]+1]
+
+            new_list.append(curr)
+            new_list.append([curr[0], curr[1]+2 * dist])
+            new_list.append([curr[0] - (2 * flip_idx), curr[1]+(2 * dist)])
+            new_list.append([curr[0] - (2 * flip_idx), curr[1]])
+
+            start = curr
+
+
+        eligible_list += new_list
+
+    return eligible_list
 
 def loop(manhattan_list, sensor_list, beacon_list, max_x, y_line):
     count = 0
@@ -80,23 +102,21 @@ def loop(manhattan_list, sensor_list, beacon_list, max_x, y_line):
                 break
     return count - exclude
 
-def loop2(manhattan_list, sensor_list, beacon_list, range_x, range_y, offset):
-    min_range_x_offset = range_x[0] - offset[0]
-    max_range_x_offset = range_x[1] - offset[0]
-    min_range_y_offset = range_y[0] - offset[1]
-    max_range_y_offset = range_y[1] - offset[1]
-
-    for x_idx in trange(min_range_x_offset, max_range_x_offset):
-        for y_idx in trange(min_range_y_offset, max_range_y_offset):
-            flag = []
-            for sensor_idx in range(0, len(manhattan_list)):
-                if manhattan([x_idx, y_idx], sensor_list[sensor_idx]) <= manhattan_list[sensor_idx]:
-                    flag.append(1)
-                else:
-                    flag.append(0)
-            if not any(flag):
-                return x_idx + offset[0], y_idx + offset[1]
-    return None
+def loop2(manhattan_list, sensor_list, test_points, range_x, range_y):
+    for [test_x, test_y] in tqdm(test_points):
+        x_idx = test_x
+        y_idx = test_y
+        flag = []
+        for sensor_idx in range(0, len(manhattan_list)):
+            if manhattan([x_idx, y_idx], sensor_list[sensor_idx]) <= manhattan_list[sensor_idx]:
+                flag.append(1)
+            else:
+                flag.append(0)
+        if not any(flag) and \
+                (x_idx < range_x[1]) and (x_idx > range_x[0]) and \
+                (y_idx < range_y[1]) and (y_idx > range_y[0]):
+            return x_idx, y_idx
+    return None, None
 
 def main():
     ## Part 1
@@ -115,17 +135,19 @@ def main2():
     # sensor, beacon, xlim, ylim, offset = read_input("Day15_test_input.txt")
     range_x, range_y = [0, 4000000], [0, 4000000]
     sensor, beacon, xlim, ylim, offset = read_input("Day15_input.txt")
+    sensor += offset
+    beacon += offset
     manhattan_list, min_x, max_x = determine_manhattan_list(sensor, beacon)
-    # print(manhattan_list)
 
-    answer_x, answer_y = loop2(manhattan_list, sensor, beacon, range_x, range_y, offset)
+    test_points = eligible_list(manhattan_list, sensor, 1)
+    answer_x, answer_y = loop2(manhattan_list, sensor, test_points, range_x, range_y)
     answer2 = calc_distress_freq(answer_x, answer_y)
-    print(f'There beacon in ({answer_x}, {answer_y}) have a score of {answer2}.')
+    print(f'The beacon in ({answer_x}, {answer_y}) have a score of {answer2}.')
 
 
 if __name__ == "__main__":
     ## Part 1
-    # calc_perf(main())
+    calc_perf(main())
 
     ## Part 2
     calc_perf(main2())
