@@ -1,0 +1,4 @@
+There are 5403290 impossible spots in y=2000000.
+Performance: 3.3300602808594704e-07 sec
+The beacon in (2572895, 2906626) have a score of 10291582906626.
+Performance: 9.57996235229075e-07 sec
