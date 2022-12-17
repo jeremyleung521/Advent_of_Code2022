@@ -12,7 +12,8 @@ from perf import calc_perf
 from random import choice
 from tqdm.auto import tqdm, trange
 from copy import deepcopy
-from collections import deque
+from collections import deque, defaultdict
+from itertools import combinations
 
 
 def read_input(file_name):
@@ -93,21 +94,6 @@ def distance_matrix(flow_dict, tunnel_dict, skip_dict):
 
     return parent, seen_dict, choices
 
-def calc_pressure(sequence, flow_rates, time):
-    seen = []
-    total_pressure = 0
-    for itime in range(time, 0, -1):
-        curr_state = time - itime
-        if sequence[curr_state] not in seen:
-            count += itime * flow_rates[sequence[curr_state]]
-            seen.append(sequence[curr_state])
-
-    return count
-
-def loop2(flow_dict, dist_dict, time):
-    for idx in flow_dict:
-        calc_pressure(flow_dict, time)
-
 def score(rates, chosen_valves):
     total = 0
     for valve, time_left in chosen_valves.items():
@@ -126,83 +112,41 @@ def choices(distance, rates, valves, time=30, cur='AA', chosen={}):
 
     yield chosen
 
-def loop(flow_dict, tunnel_dict, skip, time):
-    total_pressure = 0
-    curr = 'AA'
-    current_open = []
-    current_rates = []
-    current_path = []
-    for time in range(0, time):
-        total_pressure += sum(current_rates)
-        if flow_dict[curr] != 0 and curr not in current_open:
-            # print(f'Opening {curr}')
-            current_path.append(curr)
-            current_open.append(curr)
-            current_rates.append(flow_dict[curr])
-        else:
-            current_path.append(curr)
-            #print(f'Opening {curr}')
-            # Randomly Pick paths
-            curr = choice(tunnel_dict[curr])
-
-            #print(f'Picked {curr}')
-        #print('\n')
-
-    return total_pressure, current_open, current_rates, current_path
-
-
-
-
-def return_top3(input_list):
-    sorted_list = sorted(input_list, key=lambda x:-x)
-    cal_sum = sum(sorted_list[0:3])
-    where_three = numpy.where(input_list > sorted_list[3])[0]
-
-    return [int(cal_sum), where_three]
 
 def main():
     ## Part 1
-    flow, path, skip = read_input("Day16_test_input.txt")
-    # flow, path = read_input("Day16_input.txt")
+    # flow, path, skip = read_input("Day16_test_input.txt")
+    flow, path, skip = read_input("Day16_input.txt")
 
-    # print(flow)
     parent, dist, seen = distance_matrix(flow, path, skip)
 
     best = max(score(flow, c) for c in choices(dist, flow, set(seen)))
 
     print(f'Best path has with {best} of pressure released.')
 
-    # print(parent)
-    # print(len(parent))
-    # print(dist)
-    # print(len(dist))
-    # print(seen)
-    # print(len(seen))
-
-    # parent, dist = bfs_optimize(adj_array, end_index[0], end_index[1], [start_index])
-
-    # max_answer = 0
-    # Loop through algorithm for N times
-    # for idx in trange(2000000):
-    #     answer, current_open, current_rates, current_path = loop(flow, path, skip, 30)
-    #     if answer > max_answer:
-    #         max_answer = answer
-    #         max_open = current_open
-    #         max_rates = current_rates
-    #         max_path = current_path
-
-    # print(f'Path {max_path} has {max_open} with {max_answer} of pressure released.')
-
 def main2():
     # Part 2
-    # a = read_input("Day16_test_input.txt")
-    a = read_input("Day16_input.txt")
-    answer2 = return_top3(a)
-    print(f'Elves {answer2[1] + 1} have {answer2[0]} calories worth of food.')
+    # flow, path, skip = read_input("Day16_test_input.txt")
+    flow, path, skip = read_input("Day16_input.txt")
+
+    parent, dist, seen = distance_matrix(flow, path, skip)
+
+    maxscore = defaultdict(int)
+
+    for solution in choices(dist, flow, set(seen), 26):
+        k = frozenset(solution)
+        s = score(flow, solution)
+
+        if s > maxscore[k]:
+            maxscore[k] = s
+
+    best = max(sa + sb for (a, sa), (b, sb) in combinations(maxscore.items(), 2) if not a & b)
+
+    print(f'Best path has with {best} of pressure released.')
 
 if __name__ == "__main__":
     ## Part 1
-    calc_perf(main())
+    # calc_perf(main())
 
     ## Part 2
-    # calc_perf(main2())
+    calc_perf(main2())
