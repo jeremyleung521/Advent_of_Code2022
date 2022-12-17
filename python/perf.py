@@ -5,6 +5,8 @@
 import time
 
 def calc_perf(function):
-    startTime = time.perf_counter()
+    startTime = time.time()
+    startTimeCPU = time.process_time()
     function
-    print(f'Performance: {(time.perf_counter() - startTime)} sec')
+    print(f'Wall Clock: {(time.time() - startTime)} sec')
+    print(f'CPU Time: {(time.process_time() - startTimeCPU)} sec')
