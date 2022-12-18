@@ -1,0 +1,4 @@
+4302 number of sides.
+1.817232208995847 sec.
+2492 number of sides.
+0.029031375015620142 sec.
