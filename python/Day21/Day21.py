@@ -3,7 +3,8 @@
 # First attempt at doing Day 21 of Advent of Code 2022
 
 import time
-
+import sympy
+from ast import literal_eval
 
 def read_input(file_name, fix=False):
     with open(file_name, 'r') as f:
@@ -22,8 +23,21 @@ def read_input(file_name, fix=False):
             relation_dict[f'{line[0]}'] = line[1:]
 
     if fix:
-        def_dict['root'][1] = '='
         del def_dict['humn']
+        if relation_dict['root'][0] in def_dict.keys():
+            def_dict[relation_dict['root'][2]] = def_dict[relation_dict['root'][0]]
+            # relation_dict['root'][2] = int(2)
+            # relation_dict['root'][1] = '*'
+        elif relation_dict['root'][2] in def_dict.keys():
+            def_dict[relation_dict['root'][0]] = def_dict[relation_dict['root'][2]]
+            # relation_dict['root'][0] = int(2)
+            # relation_dict['root'][1] = '*'
+        else:
+            # relation_dict['root'][0] = int(0)
+            # relation_dict['root'][1] = '+'
+            relation_dict['root'][1] = '='
+
+    print(relation_dict['root'])
 
     return final_list, def_dict, relation_dict
 
@@ -41,6 +55,62 @@ def loop(def_dict, relation_dict):
     return def_dict['root']
 
 
+def reduce(def_dict, relation_dict):
+    # while 'root' not in def_dict.keys():
+    for _ in range(50):
+        # print(def_dict)
+        for key, relation in list(relation_dict.items()):
+            try:
+                def_dict[key] = int(eval(f'{def_dict[relation[0]]} {relation[1]} {def_dict[relation[2]]}'))
+                del relation_dict[key]
+            except KeyError:
+                pass
+
+    return def_dict, relation_dict
+
+
+def solve(def_dict, relation_dict):
+    # LHS
+    curr_var = def_dict[f'{relation_dict["root"]}']
+    for _ in range(1000)
+        curr_var[0].replace('')
+
+
+
+
+def solve_system(def_dict, relation_dict):
+    variables = set()
+    equations = []
+
+
+    for key, val in def_dict.items():
+        variables.add(key)
+        equations.append(f'{val} - {key}')
+    for key, val in relation_dict.items():
+        variables.add(key)
+        variables.add(val[2])
+        if not isinstance(val[0], int):
+            variables.add(val[0])
+
+        equations.append(f'{val[0]} {val[1]} {val[2]} - {key}')
+
+    symbols = dict()
+    for j in variables:
+        symbols[str(j)] = sympy.Symbol(j)
+        #symbols.append(j)
+        #print(type(j))
+
+    print(symbols)
+    for i in equations:
+        print(i)
+
+
+    solution = sympy.solvers.linsolve([str(f'Eq({i}, 0)') for i in equations], list(symbols.values()))
+
+    return symbols, solution
+
+    # return symbols, 1
+
 def main():
     ## Part 1
     # final_dict, def_dict, relation_dict = read_input("Day21_test_input.txt")
@@ -52,19 +122,23 @@ def main():
 
 def main2():
     # Part 2
-    # a = read_input("Day21_test_input.txt")
-    a = read_input("Day21_input.txt")
-    answer2 = return_top3(a)
-    print(f'Elves {answer2[1] + 1} have {answer2[0]} calories worth of food.')
+    final_dict, def_dict, relation_dict = read_input("Day21_test_input.txt", fix=True)
+    # final_dict, def_dict, relation_dict = read_input("Day21_input.txt")
+
+    def_dict, relation_dict = reduce(def_dict, relation_dict)
+
+    symbols, solution = solve_system(def_dict, relation_dict)
+
+    #print(f'\'root\' monkey should yell {answer}.')
 
 
 if __name__ == "__main__":
     ## Part 1
-    startTime = time.perf_counter()
-    main()
-    print(f'{time.perf_counter() - startTime} sec.')
+    # startTime = time.perf_counter()
+    # main()
+    # print(f'{time.perf_counter() - startTime} sec.')
 
     ## Part 2
-    # startTime = time.perf_counter()
-    # main2()
-    # print(f'{time.perf_counter() - startTime} sec.')
+    startTime = time.perf_counter()
+    main2()
+    print(f'{time.perf_counter() - startTime} sec.')
