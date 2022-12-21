@@ -4,7 +4,7 @@
 
 import time
 import sympy
-from ast import literal_eval
+from collections.abc import Iterable
 
 def read_input(file_name, fix=False):
     with open(file_name, 'r') as f:
@@ -24,23 +24,31 @@ def read_input(file_name, fix=False):
 
     if fix:
         del def_dict['humn']
-        if relation_dict['root'][0] in def_dict.keys():
-            def_dict[relation_dict['root'][2]] = def_dict[relation_dict['root'][0]]
-            # relation_dict['root'][2] = int(2)
-            # relation_dict['root'][1] = '*'
-        elif relation_dict['root'][2] in def_dict.keys():
-            def_dict[relation_dict['root'][0]] = def_dict[relation_dict['root'][2]]
-            # relation_dict['root'][0] = int(2)
-            # relation_dict['root'][1] = '*'
-        else:
-            # relation_dict['root'][0] = int(0)
-            # relation_dict['root'][1] = '+'
-            relation_dict['root'][1] = '='
+        # if relation_dict['root'][0] in def_dict.keys():
+        #     def_dict[relation_dict['root'][2]] = def_dict[relation_dict['root'][0]]
+        #     # relation_dict['root'][2] = int(2)
+        #     # relation_dict['root'][1] = '*'
+        # elif relation_dict['root'][2] in def_dict.keys():
+        #     def_dict[relation_dict['root'][0]] = def_dict[relation_dict['root'][2]]
+        #     # relation_dict['root'][0] = int(2)
+        #     # relation_dict['root'][1] = '*'
+        # else:
+        #     # relation_dict['root'][0] = int(0)
+        #     # relation_dict['root'][1] = '+'
+        #     relation_dict['root'][1] = '='
+        relation_dict['root'][1] = '='
 
     print(relation_dict['root'])
 
     return final_list, def_dict, relation_dict
 
+
+def flatten(xs):
+    for x in xs:
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+            yield from flatten(x)
+        else:
+            yield x
 
 def loop(def_dict, relation_dict):
     while 'root' not in def_dict.keys():
@@ -71,12 +79,36 @@ def reduce(def_dict, relation_dict):
 
 def solve(def_dict, relation_dict):
     # LHS
-    curr_var = def_dict[f'{relation_dict["root"]}']
-    for _ in range(1000)
-        curr_var[0].replace('')
+    both_sides = [relation_dict[f'{relation_dict["root"][0]}'], relation_dict[f'{relation_dict["root"][2]}']]
 
+    for idx, curr_var in enumerate(both_sides):
+        print('both sides')
+        # print(curr_var)
+        for _ in range(50):
+        # while 'humn' not in flatten(curr_var):
+            both_sides[idx] = list(flatten(curr_var))
+            for jdx, val in enumerate(curr_var):
+                print(val)
+                # print(jdx, val)
+                try:
+                    curr_var[jdx] = relation_dict[val]
+                    # curr_var[jdx] = int(eval(f'{def_dict[val[0]]} {val[1]} {def_dict[val[2]]}'))
+                    curr_var = list(flatten(curr_var))
+                    print(curr_var)
+                    print('success_replacement')
+                except (KeyError, TypeError):
+                    pass
+                try:
+                    curr_var[jdx] = def_dict[val]
+                    curr_var = list(flatten(curr_var))
+                except (KeyError, TypeError):
+                    pass
+        b = ''
+        print(curr_var)
+        #both_sides[idx] = [b.join(str(i)) for i in curr_var]
 
-
+    print(both_sides)
+    return both_sides
 
 def solve_system(def_dict, relation_dict):
     variables = set()
@@ -125,10 +157,14 @@ def main2():
     final_dict, def_dict, relation_dict = read_input("Day21_test_input.txt", fix=True)
     # final_dict, def_dict, relation_dict = read_input("Day21_input.txt")
 
-    def_dict, relation_dict = reduce(def_dict, relation_dict)
+    print(def_dict)
+    print(relation_dict)
+    answer = solve(def_dict, relation_dict)
+    # def_dict, relation_dict = reduce(def_dict, relation_dict)
+    #
+    # symbols, solution = solve_system(def_dict, relation_dict)
 
-    symbols, solution = solve_system(def_dict, relation_dict)
-
+    print(answer)
     #print(f'\'root\' monkey should yell {answer}.')
 
 
