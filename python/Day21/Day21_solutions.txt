@@ -1,0 +1,2 @@
+'root' monkey should yell 70674280581468.
+0.13743733300361782 sec.
