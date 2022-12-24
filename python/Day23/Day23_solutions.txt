@@ -1,0 +1,5 @@
+There are 4091 empty spots in the minimum rectangle.
+1.4240513750119135 sec.
+1036
+It requires 1036 moves to reach equilibrium.
+14.266876249981578 sec.
