@@ -92,25 +92,23 @@ def propagate(curr_occupied, neighbour, directions, consideration, order):
     return new_location, curr_occupied, flag
 
 
-def find_minmax(curr_occupied, n_elves):
+def find_minmax(curr_occupied, n_elves, visualize=False):
     # print(curr_occupied)
     min_x = min(curr_occupied, key=itemgetter(0))[0]
     min_y = min(curr_occupied, key=itemgetter(1))[1]
     max_x = max(curr_occupied, key=itemgetter(0))[0]
     max_y = max(curr_occupied, key=itemgetter(1))[1]
 
-    list_of_list = []
-    for idx in range(min_x, max_x + 1):
-        list_of_list.append([])
-        for jdx in range(min_y, max_y + 1):
-            if (idx, jdx) not in curr_occupied:
-                list_of_list[idx - min_x].append('.')
-            else:
-                list_of_list[idx - min_x].append('#')
-    #
-    # print(f'New Iteration: \n')
-    # for i in list_of_list:
-    #     print(f'{i}')
+    if visualize:
+        list_of_list = []
+        for idx in range(min_x, max_x + 1):
+            list_of_list.append([])
+            for jdx in range(min_y, max_y + 1):
+                if (idx, jdx) not in curr_occupied:
+                    list_of_list[idx - min_x].append('.')
+                else:
+                    list_of_list[idx - min_x].append('#')
+
     return (((max_y - min_y) + 1) * ((max_x - min_x) + 1)) - n_elves
 
 
@@ -137,7 +135,7 @@ def main2():
 
     for idx in trange(1000000):
         new_location, curr_occupied, flag = propagate(curr_occupied, neighbour, directions, conditions, order)
-        answer = find_minmax(curr_occupied, n_elves)
+        # answer = find_minmax(curr_occupied, n_elves)
         if flag is True:
             print(idx+1)
             answer2 = idx+1
